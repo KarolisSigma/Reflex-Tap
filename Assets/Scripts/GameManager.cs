@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private float timeUntilDifficult;
     [SerializeField] private Vector2 minMaxSpawnInterval;
-    [SerializeField] private GameObject readyButton;
+    [SerializeField] private GameObject menuUI;
+    [SerializeField] private GameObject gameUI;
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private GameObject dotPrefab;
     [SerializeField] private Vector2 spawnBounds;
@@ -23,11 +24,14 @@ public class GameManager : MonoBehaviour
     private float health;
     private bool playing=false;
     [SerializeField] private Image healthbar;
-    public float difficulty=0;
+    private float difficulty=0;
     private float lastTimeUpdated=0;
+    [SerializeField] private Score scoreManager;
+    [SerializeField] private GameObject gameoverPanel;
     
     void Awake()
     {
+        scoreManager.Restart();
         health=maxHealth;
         audioSource = GetComponent<AudioSource>();
         cam = Camera.main;
@@ -47,6 +51,7 @@ public class GameManager : MonoBehaviour
             foreach(GameObject dot in GameObject.FindGameObjectsWithTag("Dot")){
                 if(Vector2.Distance(clickPos, dot.transform.position)<dot.transform.localScale.x/2f){
                     Destroy(dot);
+                    scoreManager.Scored(true);
                     audioSource.PlayOneShot(tapped);
                     Instantiate(hitEffect, clickPos, Quaternion.identity);
                 }
@@ -57,7 +62,7 @@ public class GameManager : MonoBehaviour
     IEnumerator Healing(){
         while(true){
             if(playing){
-                health=Mathf.Clamp(health+2,0,100);
+                health=Mathf.Clamp(health+1,0,100);
                 UpdateHealthbar();
             }
             yield return new WaitForSeconds(1);
@@ -68,6 +73,7 @@ public class GameManager : MonoBehaviour
         audioSource.PlayOneShot(explode);
         UpdateDifficulty(-0.2f);
         health-=25;
+        scoreManager.Scored(false);
         UpdateHealthbar();
         if(health<=0){
             health=0;
@@ -81,11 +87,23 @@ public class GameManager : MonoBehaviour
     void Death(){
         playing=false;
         StopAllCoroutines();
+        foreach(GameObject dot in GameObject.FindGameObjectsWithTag("Dot")) Destroy(dot); 
+        gameoverPanel.SetActive(true);
+        gameUI.SetActive(false);
     }
 
     public void Ready(){
+        scoreManager.Restart();
+        health=maxHealth;
         audioSource.PlayOneShot(uiClick);
-        readyButton.SetActive(false);
+        menuUI.SetActive(false);
+        gameUI.SetActive(true);
+        gameoverPanel.SetActive(false);
+        gameUI.SetActive(true);
+
+        scoreManager.Restart();
+        health=maxHealth;
+        UpdateHealthbar();
         StartCoroutine(Countdown());
     }
     IEnumerator Countdown(){
