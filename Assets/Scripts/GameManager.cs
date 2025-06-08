@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private float lastTimeUpdated=0;
     [SerializeField] private Score scoreManager;
     [SerializeField] private GameObject gameoverPanel;
+    [SerializeField] private TextMeshProUGUI scoretxt;
     
     void Awake()
     {
@@ -43,6 +44,17 @@ public class GameManager : MonoBehaviour
         difficulty = Mathf.Clamp01(Mathf.Clamp01(difficulty+(Time.time-lastTimeUpdated)*(1f/timeUntilDifficult))+value);
         lastTimeUpdated=Time.time;
     }
+
+    void UpdateScoreAndRecord(){
+        int record = PlayerPrefs.GetInt("Record");
+        int score = scoreManager.score;
+        if(score>record){
+            record = score;
+            PlayerPrefs.SetInt("Record", record);
+        }
+        scoretxt.text = $"Record: {record}\nScore: {score}";
+    }
+
     void Update()
     {
         if(!playing) return;
@@ -89,6 +101,7 @@ public class GameManager : MonoBehaviour
         StopAllCoroutines();
         foreach(GameObject dot in GameObject.FindGameObjectsWithTag("Dot")) Destroy(dot); 
         gameoverPanel.SetActive(true);
+        UpdateScoreAndRecord();
         gameUI.SetActive(false);
     }
 
@@ -97,9 +110,7 @@ public class GameManager : MonoBehaviour
         health=maxHealth;
         audioSource.PlayOneShot(uiClick);
         menuUI.SetActive(false);
-        gameUI.SetActive(true);
         gameoverPanel.SetActive(false);
-        gameUI.SetActive(true);
 
         scoreManager.Restart();
         health=maxHealth;
@@ -115,6 +126,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1);
 
         }
+        gameUI.SetActive(true);
         countdownText.gameObject.SetActive(false);
         playing=true;
         lastTimeUpdated=Time.time;

@@ -652,6 +652,7 @@ MonoBehaviour:
   healthbar: {fileID: 1961112858}
   scoreManager: {fileID: 932448236}
   gameoverPanel: {fileID: 347490143}
+  scoretxt: {fileID: 2110685754}
 --- !u!4 &407709760
 Transform:
   m_ObjectHideFlags: 0
@@ -1162,6 +1163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10769de6b05bfbf4fb23256c5007aa11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score: 0
   scoreTxt: {fileID: 1931191613}
   streakTxt: {fileID: 1811306921}
 --- !u!4 &932448237
@@ -1822,7 +1824,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1318848796
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2528,7 +2530,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: READY
+  m_text: PLAY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fa516b09f199014aaac58311be72e90, type: 2}
   m_sharedMaterial: {fileID: -7728518426635585235, guid: 0fa516b09f199014aaac58311be72e90, type: 2}
@@ -2537,8 +2539,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282078578
-  m_fontColor: {r: 0.44654083, g: 0.33398286, b: 0.23169567, a: 1}
+    rgba: 4281548370
+  m_fontColor: {r: 0.3207547, g: 0.2447184, b: 0.19870651, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2555,13 +2557,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

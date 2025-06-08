@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    private int score;
+    public int score;
     private int streak;
     private float startTime;
     [SerializeField] private TextMeshProUGUI scoreTxt;
